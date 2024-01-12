@@ -1,17 +1,8 @@
 # Define base image
-#FROM ubuntu
-FROM octopuslabs/workertools:latest-ubuntu.2204
+FROM octopuslabs/workertools:latest-ubuntu.2004
 
 # Set base value for build argument
 ARG LIQUIBASE_VERSION=4.25.1
-
-# Prepare to install PowerShell
-#RUN apt-get update && apt-get install wget apt-transport-https software-properties-common curl -y
-#RUN wget -q "https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb"
-#RUN dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
-
-# Install PowerShell
-#RUN apt-get update && apt-get install powershell unzip -y
 
 # Download and install AWS CLI
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
