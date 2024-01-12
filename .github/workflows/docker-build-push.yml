@@ -102,7 +102,7 @@ jobs:
     - name: Build the ubuntu.2204 image      
       env:
         LIQUIBASE_VERSION_TO_BUILD: ${{ needs.get-version-number.outputs.LIQUIBASE_VERSION }}
-      run: docker build ./ubuntu-2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD-ubuntu.2204 --tag octopuslabs/liquibase-workertools:latest-ubuntu.2204 --build-arg FLYWAY_VERSION=$LIQUIBASE_VERSION_TO_BUILD
+      run: docker build ./ubuntu-2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD-ubuntu.2204 --tag octopuslabs/liquibase-workertools:latest-ubuntu.2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD --build-arg FLYWAY_VERSION=$LIQUIBASE_VERSION_TO_BUILD
       if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
       
     - name: Push the ubuntu.2204 version-specific image
@@ -115,20 +115,4 @@ jobs:
       run: docker push octopuslabs/liquibase-workertools:latest-ubuntu.2204
       if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
 
-  build-docker-manifest:
-    needs: [get-version-number, build-ubuntu]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Dockerhub Login
-      env:
-        USERNAME: ${{ secrets.DOCKER_HUB_USER }}
-        PASSWORD: ${{ secrets.DOCKER_HUB_PAT }}
-      run:  docker login --username $USERNAME --password "$PASSWORD"
-      if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
-
-    - name: Create docker manifest for version-specific tag
-      env:
-        LIQUIBASE_VERSION_TO_BUILD: ${{ needs.get-version-number.outputs.LIQUIBASE_VERSION }}
-      run: docker manifest create octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD
-      if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
+  
