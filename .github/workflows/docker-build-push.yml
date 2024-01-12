@@ -24,7 +24,7 @@ jobs:
         $Repository = "liquibase/liquibase"
         $releasesUrl = "https://api.github.com/repos/$Repository/releases"
 
-        $tags = (Invoke-WebRequest $releases -UseBasicParsing | ConvertFrom-Json)
+        $tags = (Invoke-WebRequest $releasesUrl -UseBasicParsing | ConvertFrom-Json)
         $latestLiquibaseVersion = $null
 
         foreach ($tag in $tags) {
