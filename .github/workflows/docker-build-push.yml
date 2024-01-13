@@ -102,7 +102,7 @@ jobs:
     - name: Build the ubuntu.2204 image      
       env:
         LIQUIBASE_VERSION_TO_BUILD: ${{ needs.get-version-number.outputs.LIQUIBASE_VERSION }}
-      run: docker build ./ubuntu-2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD-ubuntu.2204 --tag octopuslabs/liquibase-workertools:latest-ubuntu.2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD --build-arg FLYWAY_VERSION=$LIQUIBASE_VERSION_TO_BUILD
+      run: docker build ./ubuntu-2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD-ubuntu.2204 --tag octopuslabs/liquibase-workertools:latest-ubuntu.2204 --tag octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD --tag octopuslabs/liquibase-workertools:latest --build-arg FLYWAY_VERSION=$LIQUIBASE_VERSION_TO_BUILD
       if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
       
     - name: Push the ubuntu.2204 version-specific image
