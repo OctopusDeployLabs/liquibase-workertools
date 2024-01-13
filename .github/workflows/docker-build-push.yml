@@ -120,4 +120,7 @@ jobs:
         LIQUIBASE_VERSION_TO_BUILD: ${{ needs.get-version-number.outputs.LIQUIBASE_VERSION }}
       run: docker push octopuslabs/liquibase-workertools:$LIQUIBASE_VERSION_TO_BUILD
       if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}
-  
+
+    - name: Push the ubuntu.2204 latest image
+      run: docker push octopuslabs/liquibase-workertools:latest
+      if: ${{ needs.get-version-number.outputs.CONTINUE == 'Yes' }}      
