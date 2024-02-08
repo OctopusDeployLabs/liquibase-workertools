@@ -25,13 +25,14 @@ jobs:
         $releasesUrl = "https://api.github.com/repos/$Repository/releases"
 
         $tags = (Invoke-WebRequest $releasesUrl -UseBasicParsing | ConvertFrom-Json)
-        $latestLiquibaseVersion = $null
+        $tagsWithAssets = @($tags | Where-Object {$_.assets.Count -gt 0 })
 
-        foreach ($tag in $tags) {
-        if ($tag.assets.Count -gt 0) {
-            $latestLiquibaseVersion = ($tag.tag_name.Replace("v", ""))
-          }
+        if($null -eq $tagsWithAssets) {
+            throw "No valid tags found for liquibase tool!"
         }
+
+        $latestLiquibaseTag = ($tagsWithAssets | Select-Object -First 1)
+        $latestLiquibaseVersion = $latestLiquibaseTag.tag_name -Replace "v",""
       
         $workerToolsTags = (Invoke-RestMethod "https://registry.hub.docker.com/v2/repositories/octopuslabs/liquibase-workertools/tags?page_size=50")
         $matchingTag = $workerToolsTags.results | Where-Object { $_.name -eq $latestLiquibaseVersion }
